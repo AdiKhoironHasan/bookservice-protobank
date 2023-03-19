@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option go_package = "proto/foo";
+option go_package = "proto/users";
 
-package foo;
+package users;
 
 message UserCreateRequest {
   string name = 1;
