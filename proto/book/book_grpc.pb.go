@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type BookServiceClient interface {
 	List(ctx context.Context, in *BookListReq, opts ...grpc.CallOption) (*BookListRes, error)
 	Store(ctx context.Context, in *BookStoreReq, opts ...grpc.CallOption) (*BookStoreRes, error)
-	Detail(ctx context.Context, in *BookStoreReq, opts ...grpc.CallOption) (*BookStoreRes, error)
+	Detail(ctx context.Context, in *BookDetailReq, opts ...grpc.CallOption) (*BookDetailRes, error)
 	Update(ctx context.Context, in *BookUpdateReq, opts ...grpc.CallOption) (*BookUpdateRes, error)
 	Delete(ctx context.Context, in *BookDeleteReq, opts ...grpc.CallOption) (*BookDeleteRes, error)
 }
@@ -55,8 +55,8 @@ func (c *bookServiceClient) Store(ctx context.Context, in *BookStoreReq, opts ..
 	return out, nil
 }
 
-func (c *bookServiceClient) Detail(ctx context.Context, in *BookStoreReq, opts ...grpc.CallOption) (*BookStoreRes, error) {
-	out := new(BookStoreRes)
+func (c *bookServiceClient) Detail(ctx context.Context, in *BookDetailReq, opts ...grpc.CallOption) (*BookDetailRes, error) {
+	out := new(BookDetailRes)
 	err := c.cc.Invoke(ctx, "/book.BookService/Detail", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (c *bookServiceClient) Delete(ctx context.Context, in *BookDeleteReq, opts 
 type BookServiceServer interface {
 	List(context.Context, *BookListReq) (*BookListRes, error)
 	Store(context.Context, *BookStoreReq) (*BookStoreRes, error)
-	Detail(context.Context, *BookStoreReq) (*BookStoreRes, error)
+	Detail(context.Context, *BookDetailReq) (*BookDetailRes, error)
 	Update(context.Context, *BookUpdateReq) (*BookUpdateRes, error)
 	Delete(context.Context, *BookDeleteReq) (*BookDeleteRes, error)
 	mustEmbedUnimplementedBookServiceServer()
@@ -104,7 +104,7 @@ func (UnimplementedBookServiceServer) List(context.Context, *BookListReq) (*Book
 func (UnimplementedBookServiceServer) Store(context.Context, *BookStoreReq) (*BookStoreRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Store not implemented")
 }
-func (UnimplementedBookServiceServer) Detail(context.Context, *BookStoreReq) (*BookStoreRes, error) {
+func (UnimplementedBookServiceServer) Detail(context.Context, *BookDetailReq) (*BookDetailRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Detail not implemented")
 }
 func (UnimplementedBookServiceServer) Update(context.Context, *BookUpdateReq) (*BookUpdateRes, error) {
@@ -163,7 +163,7 @@ func _BookService_Store_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _BookService_Detail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BookStoreReq)
+	in := new(BookDetailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func _BookService_Detail_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/book.BookService/Detail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookServiceServer).Detail(ctx, req.(*BookStoreReq))
+		return srv.(BookServiceServer).Detail(ctx, req.(*BookDetailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
