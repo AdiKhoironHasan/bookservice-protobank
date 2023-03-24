@@ -7,7 +7,8 @@ package book;
 
 // book list
 message BookListReq {
-    string title = 1;
+    string author = 1;
+    string title = 2;
 }
 message BookListRes {
    repeated Book books = 1;
