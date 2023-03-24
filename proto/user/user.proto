@@ -16,7 +16,9 @@ message UserListRes {
 // User store
 message UserStoreReq {
     string name = 1;
-    string role = 2;
+    string email = 2;
+    string password = 3;
+    string role = 4;
 }
 message UserStoreRes {
 }
@@ -33,7 +35,9 @@ message UserDetailRes {
 message UserUpdateReq {
     int64 id = 1;
     string name = 2;
-    string role = 3;
+    string email = 3;
+    string password = 4;
+    string role = 5;
 }
 message UserUpdateRes {
 }
@@ -55,9 +59,11 @@ message PingRes {
 message User {
     int64 id = 1;
     string name = 2;
-    string role = 3;
-    string created_at = 4;
-    string updated_at = 5;
+    string email = 3;
+    string password = 4;
+    string role = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 
