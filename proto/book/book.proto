@@ -10,7 +10,12 @@ message BookListReq {
 
 // book list
 message BookListRes {
-   repeated Book books = 1;
+   BookAndAuthor book_and_author = 1;
+}
+message BookAndAuthor {
+    int64 author_id = 1;
+    string author_name = 2;
+    repeated Book books = 3;
 }
 message Book {
     int64 id = 1;
