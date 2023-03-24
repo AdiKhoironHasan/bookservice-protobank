@@ -4,19 +4,27 @@ option go_package = "proto/book";
 
 package book;
 
-
-// book list
 message BookListReq {
     string title = 1;
 }
+
+// book list
 message BookListRes {
    repeated Book books = 1;
+}
+message Book {
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+    string created_at = 4;
+    string updated_at = 5;
 }
 
 // book store
 message BookStoreReq {
-    string title = 1;
-    string description = 2;
+    int64 author_id = 1;
+    string title = 2;
+    string description = 3;
 }
 message BookStoreRes {
 }
@@ -32,8 +40,9 @@ message BookDetailRes {
 // book update
 message BookUpdateReq {
     int64 id = 1;
-    string title = 2;
-    string description = 3;
+    int64 author_id = 2;
+    string title = 3;
+    string description = 4;
 }
 message BookUpdateRes {
 }
@@ -51,16 +60,6 @@ message PingReq {
 message PingRes {
     string message = 1;
 }
-
-// book
-message Book {
-    int64 id = 1;
-    string title = 2;
-    string description = 3;
-    string created_at = 4;
-    string updated_at = 5;
-}
-
 
 service BookService {
     rpc Ping (PingReq) returns (PingRes) {}
