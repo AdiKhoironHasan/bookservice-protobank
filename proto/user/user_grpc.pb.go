@@ -28,6 +28,9 @@ type UserServiceClient interface {
 	Detail(ctx context.Context, in *UserDetailReq, opts ...grpc.CallOption) (*UserDetailRes, error)
 	Update(ctx context.Context, in *UserUpdateReq, opts ...grpc.CallOption) (*UserUpdateRes, error)
 	Delete(ctx context.Context, in *UserDeleteReq, opts ...grpc.CallOption) (*UserDeleteRes, error)
+	Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginRes, error)
+	Logout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*UserLogoutRes, error)
+	TokenCheck(ctx context.Context, in *TokenReq, opts ...grpc.CallOption) (*TokenRes, error)
 }
 
 type userServiceClient struct {
@@ -92,6 +95,33 @@ func (c *userServiceClient) Delete(ctx context.Context, in *UserDeleteReq, opts 
 	return out, nil
 }
 
+func (c *userServiceClient) Login(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginRes, error) {
+	out := new(UserLoginRes)
+	err := c.cc.Invoke(ctx, "/user.UserService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) Logout(ctx context.Context, in *UserLogoutReq, opts ...grpc.CallOption) (*UserLogoutRes, error) {
+	out := new(UserLogoutRes)
+	err := c.cc.Invoke(ctx, "/user.UserService/Logout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) TokenCheck(ctx context.Context, in *TokenReq, opts ...grpc.CallOption) (*TokenRes, error) {
+	out := new(TokenRes)
+	err := c.cc.Invoke(ctx, "/user.UserService/TokenCheck", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -102,6 +132,9 @@ type UserServiceServer interface {
 	Detail(context.Context, *UserDetailReq) (*UserDetailRes, error)
 	Update(context.Context, *UserUpdateReq) (*UserUpdateRes, error)
 	Delete(context.Context, *UserDeleteReq) (*UserDeleteRes, error)
+	Login(context.Context, *UserLoginReq) (*UserLoginRes, error)
+	Logout(context.Context, *UserLogoutReq) (*UserLogoutRes, error)
+	TokenCheck(context.Context, *TokenReq) (*TokenRes, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -126,6 +159,15 @@ func (UnimplementedUserServiceServer) Update(context.Context, *UserUpdateReq) (*
 }
 func (UnimplementedUserServiceServer) Delete(context.Context, *UserDeleteReq) (*UserDeleteRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedUserServiceServer) Login(context.Context, *UserLoginReq) (*UserLoginRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUserServiceServer) Logout(context.Context, *UserLogoutReq) (*UserLogoutRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
+}
+func (UnimplementedUserServiceServer) TokenCheck(context.Context, *TokenReq) (*TokenRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method TokenCheck not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -248,6 +290,60 @@ func _UserService_Delete_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Login(ctx, req.(*UserLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLogoutReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/Logout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).Logout(ctx, req.(*UserLogoutReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_TokenCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TokenReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).TokenCheck(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.UserService/TokenCheck",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).TokenCheck(ctx, req.(*TokenReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +374,18 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _UserService_Delete_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _UserService_Login_Handler,
+		},
+		{
+			MethodName: "Logout",
+			Handler:    _UserService_Logout_Handler,
+		},
+		{
+			MethodName: "TokenCheck",
+			Handler:    _UserService_TokenCheck_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
