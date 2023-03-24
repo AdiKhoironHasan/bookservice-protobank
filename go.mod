@@ -1,4 +1,4 @@
-module github.com/AdiKhoironHasan/bookservices-protobank
+module github.com/AdiKhoironHasan/bookservice-protobank
 
 go 1.20
 
