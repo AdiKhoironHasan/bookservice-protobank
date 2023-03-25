@@ -28,7 +28,7 @@ message UserDetailReq {
     int64 id = 1;
 }
 message UserDetailRes {
-    User User = 2;
+    User User = 1;
 }
 
 // User update
@@ -72,23 +72,7 @@ message UserLoginReq {
     string password = 2;
 }
 message UserLoginRes {
-    string token = 1;
-}
-
-// user logout
-message UserLogoutReq {
-    string token = 1;
-}
-message UserLogoutRes {
-}
-
-// token check
-message TokenReq {
-    string token = 1;
-}
-
-message TokenRes {
-    string token = 1;
+    User User = 1;
 }
 
 service UserService {
@@ -98,8 +82,5 @@ service UserService {
     rpc Detail(UserDetailReq) returns (UserDetailRes) {}
     rpc Update(UserUpdateReq) returns (UserUpdateRes) {}
     rpc Delete(UserDeleteReq) returns (UserDeleteRes) {}
-
     rpc Login(UserLoginReq) returns (UserLoginRes) {}
-    rpc Logout(UserLogoutReq) returns (UserLogoutRes) {}
-    rpc TokenCheck(TokenReq) returns (TokenRes) {}
 }
